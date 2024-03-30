@@ -1,20 +1,26 @@
-const express        = require("express");
-const session        = require("express-session");
-const MongoStore     = require("connect-mongo")(session);
+require('dotenv').config();
+
+const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 const expressLayouts = require("express-ejs-layouts");
-const path           = require("path");
-const logger         = require("morgan");
-const cookieParser   = require("cookie-parser");
-const bodyParser     = require("body-parser");
-const mongoose       = require("mongoose");
-const app            = express();
+const path = require("path");
+const logger = require("morgan");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const app = express();
 
 // Controllers
-const siteController     = require("./routes/siteController");
+const siteController = require("./routes/siteController");
 const locationController = require("./routes/locationController");
 
 // Mongoose configuration
-mongoose.connect("mongodb://127.0.0.1:27017/deploy-exercise")
+mongoose.connect(process.env.MONGODB_URI, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => console.log(`⚡️ connected to mongoDB`))
   .catch(err => console.error(`💥 unable to connect to mongoDB`, err));
 
